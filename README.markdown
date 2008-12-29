@@ -79,7 +79,7 @@ Even more advanced example:
 Running the specs
 =================
 
-You need to have the [rspec][1] and [factory_girl][2] gems installed (both of which you should be using anyway).
+You need to have the [rspec][1] and [factory\_girl][2] gems installed (both of which you should be using anyway).
 
     [sudo] gem install rspec
     [sudo] gem install thoughtbot-factory_girl --source http://gems.github.com
