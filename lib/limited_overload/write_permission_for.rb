@@ -15,13 +15,13 @@ module LimitedOverload
         options = args.extract_options!
         role = args.first.is_a?(Symbol) ? args.shift : nil
         
-        define_method :write_permission_for_creator? do |user|
-          if options.delete(:creator)
+        if options.delete(:creator)
+          define_method :write_permission_for_creator? do |user|
             return unless user and not new_record? and respond_to?(:user)
             self.user == user
-          else
-            false
           end
+        else
+          define_method(:write_permission_for_creator?) { |user| false }
         end
         
         if delegate_to = options.delete(:delegate)
