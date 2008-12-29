@@ -86,13 +86,45 @@ describe "write_permission_for" do
       @release.should_not be_writeable_for(@user)
     end
   
-    it "is not writeable for creator" do
+    it "is not writeable for release creator" do
       @release.should_not be_writeable_for(@release_creator)
     end
   
     it "is writeable for admin" do
       @release.should be_writeable_for(@admin)
     end
-
   end
+  
+  describe ":delegate => :project" do
+    before(:each) do
+      Release.class_eval do
+        write_permission_for :delegate => :project
+      end
+      
+      Project.class_eval do
+        write_permission_for :creator => true
+      end
+      
+      @release = Factory(:release)
+      @release_creator = @release.user
+      @project = @release.project
+      @project_creator = @release.project.user
+    end
+    
+    it "is writeable for the project creator" do
+      @release.should be_writeable_for(@project_creator)
+    end
+
+    it "is not writeable for user" do
+      @release.should_not be_writeable_for(@user)
+    end
+
+    it "is not writeable for release creator" do
+      @release.should_not be_writeable_for(@release_creator)
+    end
+  
+    it "is not writeable for admin" do
+      @release.should_not be_writeable_for(@admin)
+    end
+  end  
 end

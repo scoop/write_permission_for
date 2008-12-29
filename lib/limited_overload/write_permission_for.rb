@@ -24,12 +24,16 @@ module LimitedOverload
           end
         end
         
-        define_method :write_permission_for? do |user|
-          return unless user and not new_record?
+        if delegate_to = options.delete(:delegate)
+          delegate :write_permission_for?, :to => delegate_to
+        else
+          define_method :write_permission_for? do |user|
+            return unless user and not new_record?
 
-          (role && user.respond_to?(:role?) && user.role?(role)) ||
-          write_permission_for_creator?(user) ||
-          (block_given? && yield(self, user))
+            (role && user.respond_to?(:role?) && user.role?(role)) ||
+            write_permission_for_creator?(user) ||
+            (block_given? && yield(self, user))
+          end
         end
         alias_method :writeable_for?, :write_permission_for?
       end

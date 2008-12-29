@@ -4,7 +4,7 @@ $LOAD_PATH.unshift "#{dir}/../lib"
 require 'rubygems'
 require 'spec'
 require 'factory_girl'
-require 'write_permission_for'
+require 'limited_overload/write_permission_for'
 require File.join(dir, '../config/environment')
 
 Spec::Runner.configure do |config|
