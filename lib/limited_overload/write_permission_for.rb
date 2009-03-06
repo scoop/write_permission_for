@@ -17,6 +17,7 @@ module LimitedOverload
         
         if options.delete(:creator)
           define_method :write_permission_for_creator? do |user|
+            
             return unless user and not new_record? and respond_to?(:user)
             self.user == user
           end
@@ -27,12 +28,13 @@ module LimitedOverload
         if delegate_to = options.delete(:delegate)
           delegate :write_permission_for?, :to => delegate_to
         else
-          define_method :write_permission_for? do |user|
+          define_method :write_permission_for? do |user, *args|
             return unless user and not new_record?
+            options = args.extract_options!
 
             (role && user.respond_to?(:role?) && user.role?(role)) ||
             write_permission_for_creator?(user) ||
-            (block_given? && yield(self, user))
+            (block_given? && yield(self, user, options))
           end
         end
         alias_method :writeable_for?, :write_permission_for?

@@ -126,5 +126,23 @@ describe "write_permission_for" do
     it "is not writeable for admin" do
       @release.should_not be_writeable_for(@admin)
     end
-  end  
+  end
+  
+  describe "options hash" do
+    before(:each) do
+      Project.class_eval do
+        write_permission_for :admin do |record, user, options|
+          user && options[:action] != :destroy
+        end
+      end
+
+      @project = Project.make
+      @user = User.make
+    end
+
+    it "should take an options hash with writeable_for and hand it down to the block for extra flexibility" do
+      @project.should be_writeable_for(@user)
+      @project.should_not be_writeable_for(@user, :action => :destroy)
+    end
+  end
 end
