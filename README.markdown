@@ -79,10 +79,10 @@ Even more advanced example:
 Running the specs
 =================
 
-You need to have the [rspec][1] and [factory\_girl][2] gems installed (both of which you should be using anyway).
+You need to have the [rspec][1], [rr][2], and [machinist][3] gems installed (all of which you should be using anyway).
 
-    [sudo] gem install rspec
-    [sudo] gem install thoughtbot-factory_girl --source http://gems.github.com
+    [sudo] gem install rspec rr
+    [sudo] gem install notahat-machinist --source http://gems.github.com
 
 After that (and presuming SQLite is available on your system) running the specs should be a matter of:
 
@@ -112,7 +112,8 @@ Sample output:
     - is writeable for admin
   
 
-[1]: http://github.com/dchelimsky/rspec/tree/master
-[2]: http://github.com/thoughtbot/factory_girl/tree/master
+[1]: http://github.com/dchelimsky/rspec
+[2]: http://github.com/btakita/rr
+[3]: http://github.com/notahat/machinist
 
-Copyright (c) 2008 Patrick Lenz, released under the MIT license
+Copyright (c) 2009 Patrick Lenz, released under the MIT license

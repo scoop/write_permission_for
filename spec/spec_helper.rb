@@ -3,7 +3,7 @@ $LOAD_PATH.unshift "#{dir}/../lib"
 
 require 'rubygems'
 require 'spec'
-require 'factory_girl'
+require 'machinist'
 require 'limited_overload/write_permission_for'
 require File.join(dir, '../config/environment')
 
@@ -11,7 +11,6 @@ Spec::Runner.configure do |config|
   config.mock_with :rr
   
   config.before :suite do
-    
     load File.join(dir, "../db/schema.rb")
 
     User = Class.new(ActiveRecord::Base)
@@ -35,31 +34,25 @@ Spec::Runner.configure do |config|
       belongs_to :user
     end
 
-    Factory.define :user do |u|
-      u.login 'John'
-      u.admin false
+    User.blueprint do
+      login 'John'
+      admin false
     end
 
-    Factory.define :admin, :class => User do |u|
-      u.login 'Admin'
-      u.admin true
+    User.blueprint(:admin) do
+      login 'Admin'
+      admin true
     end
 
-    Factory.define :creator, :class => User do |u|
-      u.login 'Creator'
-      u.admin false
-    end
-
-    Factory.define :project do |p|
-      p.name 'Linux'
-      p.association :user, :factory => :creator
+    Project.blueprint do
+      name 'Linux'
+      user
     end
     
-    Factory.define :release do |r|
-      r.version "2.6.20"
-      r.association :project, :factory => :project
-      r.association :user, :factory => :creator
+    Release.blueprint do
+      version "2.6.20"
+      project
+      user
     end
-
   end
 end

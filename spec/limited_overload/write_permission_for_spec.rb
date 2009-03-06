@@ -2,10 +2,10 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
 describe "write_permission_for" do
   before(:each) do
-    @project = Factory(:project)
-    @user = Factory(:user)
+    @project = Project.make
+    @user = User.make
     @creator = @project.user
-    @admin = Factory(:admin)
+    @admin = User.make(:admin)
   end
 
   describe ":creator => true" do
@@ -73,7 +73,7 @@ describe "write_permission_for" do
       Release.class_eval do
         write_permission_for(:admin) { |record, user| user == record.project.user }
       end
-      @release = Factory(:release)
+      @release = Release.make
       @release_creator = @release.user
       @project_creator = @release.project.user
     end
@@ -105,7 +105,7 @@ describe "write_permission_for" do
         write_permission_for :creator => true
       end
       
-      @release = Factory(:release)
+      @release = Release.make
       @release_creator = @release.user
       @project = @release.project
       @project_creator = @release.project.user
